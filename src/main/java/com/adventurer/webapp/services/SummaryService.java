@@ -13,7 +13,7 @@ public class SummaryService {
         this.summaryRepository = summaryRepository;
     }
 
-    public Summary getSummaryByUser(Long userId) {
+    public Summary getSummaryByUserId(Long userId) {
         return summaryRepository.findById(userId).get();
     }
 

@@ -1,5 +1,6 @@
 package com.adventurer.webapp.controllers;
 
+import com.adventurer.webapp.models.Summary;
 import com.adventurer.webapp.models.User;
 import com.adventurer.webapp.services.SummaryService;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,12 @@ public class SummaryController {
     }
 
     @GetMapping("/summary")
-    public ResponseEntity<?> getSummaryByUser(@RequestBody User user) {
-        return ResponseEntity.ok(summaryService.getSummaryByUser(user.getId()));
+    public ResponseEntity<?> getSummaryByUserId(@RequestBody Long id) {
+        return ResponseEntity.ok(summaryService.getSummaryByUserId(id));
+    }
+
+    @PostMapping("/summary")
+    public ResponseEntity<?> addSummary(@RequestBody Summary summary) {
+        return ResponseEntity.ok(summaryService.save(summary));
     }
 }
