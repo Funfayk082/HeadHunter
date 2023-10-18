@@ -1,6 +1,11 @@
 version: '3.5'
 
 services:
+  app:
+    container_name: web-app
+    build: .
+    ports:
+      - "8080:8080"
   db:
     container_name: db
     image: postgres:latest
