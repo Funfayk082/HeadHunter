@@ -1,6 +1,11 @@
 version: '3.5'
 
 services:
+  app:
+    container_name: web-app
+    build: .
+    ports:
+      - "8080:8080"
   db:
     container_name: db
     image: postgres:latest
@@ -11,3 +16,17 @@ services:
       POSTGRES_DB: service_example
     ports:
       - "5432:5432"
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: test@mail.ru
+      PGADMIN_DEFAULT_PASSWORD: pass
+    volumes:
+      - pgadmin:/root/.pgadmin
+    ports:
+      - "8081:80"
+
+volumes:
+  db:
+  pgadmin:
