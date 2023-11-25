@@ -20,6 +20,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(userId));
     }
 
+//    @GetMapping("/users/")
+//    public ResponseEntity<?> getUserByEmail(@RequestBody String email) {
+//        return ResponseEntity.ok(userService.getUserByEmail(email));
+//    }
+
     @PostMapping("/users/")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.save(user));

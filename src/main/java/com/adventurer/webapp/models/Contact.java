@@ -11,6 +11,9 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contactId;
 
+    @Column(nullable = false)
+    private String content;
+
     @Column(nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
     private ContactType contactType;
