@@ -14,7 +14,7 @@ public class SummaryService {
     }
 
     public Summary getSummaryByUserId(Long userId) {
-        return summaryRepository.findById(userId).get();
+        return summaryRepository.findSummaryByUserId(userId).get();
     }
 
     public Summary save(Summary summary) {

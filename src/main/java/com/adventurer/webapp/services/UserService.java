@@ -12,8 +12,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User getUserById(Long userId) {
-        return userRepository.findById(userId).get();
+    public User getUserByEmail(String email) {
+        return userRepository.findUserByEmail(email).get();
     }
 
     public User save(User user) {

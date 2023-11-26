@@ -15,9 +15,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<?> getUserById(@PathVariable Long userId) {
-        return ResponseEntity.ok(userService.getUserById(userId));
+    @GetMapping("/users/")
+    public ResponseEntity<?> getUserByEmail(@RequestParam String email) {
+        return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
     @PostMapping("/users/")

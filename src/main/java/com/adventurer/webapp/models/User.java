@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,16 +23,13 @@ public class User {
     @Column(nullable = false)
     private String name;
     private String patronymic;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @Column(nullable = false)
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
+    @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
-    private Character gender;
+    private String gender;
     @Column(nullable = false)
     private String region;
-
-    public Long getId() {
-        return this.id;
-    }
 }
