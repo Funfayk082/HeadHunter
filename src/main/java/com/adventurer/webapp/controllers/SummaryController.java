@@ -16,8 +16,8 @@ public class SummaryController {
     }
 
     @GetMapping("/summary")
-    public ResponseEntity<?> getSummaryByUserId(@RequestBody Long id) {
-        return ResponseEntity.ok(summaryService.getSummaryByUserId(id));
+    public ResponseEntity<?> getSummaryByUserId(@RequestParam String email) {
+        return ResponseEntity.ok(summaryService.getSummaryByUserEmail(email));
     }
 
     @PostMapping("/summary")

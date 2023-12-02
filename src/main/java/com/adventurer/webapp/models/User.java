@@ -30,6 +30,5 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String gender;
-    @Column(nullable = false)
-    private String region;
+
 }

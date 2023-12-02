@@ -35,4 +35,6 @@ public class Summary {
     private StatusType status;
     @Column(nullable = false)
     private String photo;
+    @Column(nullable = false)
+    private String region;
 }

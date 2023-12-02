@@ -15,12 +15,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users/")
+    @GetMapping("/users")
     public ResponseEntity<?> getUserByEmail(@RequestParam String email) {
         return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
-    @PostMapping("/users/")
+    @PostMapping("/users")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.save(user));
     }

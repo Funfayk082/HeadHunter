@@ -13,8 +13,8 @@ public class SummaryService {
         this.summaryRepository = summaryRepository;
     }
 
-    public Summary getSummaryByUserId(Long userId) {
-        return summaryRepository.findSummaryByUserId(userId).get();
+    public Summary getSummaryByUserEmail(String userEmail) {
+        return summaryRepository.findSummaryByUserEmail(userEmail).get();
     }
 
     public Summary save(Summary summary) {
