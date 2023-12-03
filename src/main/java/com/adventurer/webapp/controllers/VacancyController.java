@@ -17,12 +17,10 @@ public class VacancyController {
     }
 
     @GetMapping("/vacancies")
-    public ResponseEntity<?> getVacancies() {
-        return ResponseEntity.ok(vacancyService.findAllVacancies());
-    }
-
-    @GetMapping("/vacancies")
-    public ResponseEntity<?> getVacancyByHirerTitle(@RequestParam String title) {
+    public ResponseEntity<?> getVacancies(@RequestParam(required = false) String title) {
+        if (title == null) {
+            return ResponseEntity.ok(vacancyService.findAllVacancies());
+        }
         return ResponseEntity.ok(vacancyService.findVacancyByHirerTitle(title));
     }
 }
