@@ -18,7 +18,7 @@ public class VacancyController {
 
     @GetMapping("/vacancies")
     public ResponseEntity<?> getVacancies() {
-        return ResponseEntity.ok(vacancyService.findVacancyByHirerTitle(""));
+        return ResponseEntity.ok(vacancyService.findAllVacancies());
     }
 
     @GetMapping("/vacancies")
