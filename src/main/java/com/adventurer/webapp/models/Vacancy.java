@@ -22,9 +22,9 @@ public class Vacancy {
     @Column(nullable = false)
     private String description;
     @Column(nullable = false)
-    private String workExperience;
+    private WorkExperience  workExperience;
     @Column(nullable = false)
-    private String region;
+    private Region region;
     @Column(nullable = false)
     private String specialty;
     @Column(nullable = false)
@@ -40,5 +40,6 @@ public class Vacancy {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private WorkShedule workShedule;
-
+    @Column(nullable = false)
+    private Hirer hirer;
 }
