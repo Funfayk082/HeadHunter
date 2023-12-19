@@ -1,6 +1,9 @@
 package com.adventurer.webapp.models;
 
-import groovyjarjarpicocli.CommandLine;
+import com.adventurer.webapp.enums.Education;
+import com.adventurer.webapp.enums.EmploymentType;
+import com.adventurer.webapp.enums.WorkExperience;
+import com.adventurer.webapp.enums.WorkShedule;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +25,9 @@ public class Vacancy {
     @Column(nullable = false)
     private String description;
     @Column(nullable = false)
-    private WorkExperience  workExperience;
-    @Column(nullable = false)
+    private WorkExperience workExperience;
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "region_id")
     private Region region;
     @Column(nullable = false)
     private String specialty;
@@ -40,6 +44,7 @@ public class Vacancy {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private WorkShedule workShedule;
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "hirer_id")
     private Hirer hirer;
 }

@@ -1,4 +1,4 @@
-package com.adventurer.webapp.models;
+package com.adventurer.webapp.enums;
 
 public enum Education {
     NOT_REQUIRED, HIGH, SPEC_MIDDLE

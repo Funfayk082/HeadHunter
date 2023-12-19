@@ -1,9 +1,12 @@
 package com.adventurer.webapp.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.testng.TestRunner;
 
 import java.util.List;
 
@@ -21,5 +24,12 @@ public class Hirer {
     @Column(nullable = false)
     private String description;
     private String address;
-    private List<Contact> contacts;
+    @OneToMany(mappedBy = "hirer", cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ToString.Exclude
+    private List<PersonContact> contacts;
+    @OneToMany(mappedBy = "hirer", cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ToString.Exclude
+    private List<Vacancy> vacancies;
 }

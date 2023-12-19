@@ -1,5 +1,6 @@
 package com.adventurer.webapp.models;
 
+import com.adventurer.webapp.enums.StatusType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Data
@@ -29,12 +29,13 @@ public class Summary {
     @OneToMany(mappedBy = "summary", cascade = CascadeType.ALL)
     @JsonBackReference
     @ToString.Exclude
-    private List<Contact> contacts;
+    private List<PersonContact> contacts;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusType status;
     @Column(nullable = false)
     private String photo;
-    @Column(nullable = false)
-    private String region;
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "region_id")
+    private Region region;
 }

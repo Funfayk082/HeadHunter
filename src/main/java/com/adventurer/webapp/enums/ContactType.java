@@ -1,4 +1,4 @@
-package com.adventurer.webapp.models;
+package com.adventurer.webapp.enums;
 
 public enum ContactType {
     PHONE, EMAIL, OTHER

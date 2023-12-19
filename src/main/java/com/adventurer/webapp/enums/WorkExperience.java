@@ -1,4 +1,4 @@
-package com.adventurer.webapp.models;
+package com.adventurer.webapp.enums;
 
 public enum WorkExperience {
     D_MATTER, UNDEFINED, BEFORE_YEAR, OF_1_TO_3_YEAR,
