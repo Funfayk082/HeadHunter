@@ -1,9 +1,7 @@
-package com.adventurer.webapp.repos;
+package com.adventurer.webapp.repositories;
 
 import com.adventurer.webapp.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 

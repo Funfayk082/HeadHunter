@@ -1,4 +1,4 @@
-package com.adventurer.webapp.repos;
+package com.adventurer.webapp.repositories;
 
 import com.adventurer.webapp.models.Summary;
 import org.springframework.data.jpa.repository.JpaRepository;

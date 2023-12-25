@@ -1,9 +1,10 @@
 package com.adventurer.webapp.controllers;
 
+import com.adventurer.webapp.dto.summaries.CreateSummaryRequestDto;
 import com.adventurer.webapp.models.Summary;
-import com.adventurer.webapp.models.User;
 import com.adventurer.webapp.services.SummaryService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,13 +16,13 @@ public class SummaryController {
         this.summaryService = summaryService;
     }
 
-    @GetMapping("/summary")
-    public ResponseEntity<?> getSummaryByUserId(@RequestParam String email) {
+    @GetMapping("/summaries")
+    public ResponseEntity<?> getSummaryByUserEmail(@RequestParam String email) {
         return ResponseEntity.ok(summaryService.getSummaryByUserEmail(email));
     }
 
-    @PostMapping("/summary")
-    public ResponseEntity<?> addSummary(@RequestBody Summary summary) {
+    @PostMapping("/summaries")
+    public ResponseEntity<?> addSummary(@RequestBody CreateSummaryRequestDto summary) {
         return ResponseEntity.ok(summaryService.save(summary));
     }
 }

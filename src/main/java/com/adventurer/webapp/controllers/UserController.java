@@ -1,6 +1,6 @@
 package com.adventurer.webapp.controllers;
 
-import com.adventurer.webapp.models.User;
+import com.adventurer.webapp.dto.users.CreateUserRequestDto;
 import com.adventurer.webapp.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<?> addUser(@RequestBody User user) {
+    public ResponseEntity<?> addUser(@RequestBody CreateUserRequestDto user) {
         return ResponseEntity.ok(userService.save(user));
     }
 }

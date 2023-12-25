@@ -1,23 +1,27 @@
 package com.adventurer.webapp.services;
 
+import com.adventurer.webapp.dto.summaries.CreateSummaryRequestDto;
+import com.adventurer.webapp.dto.summaries.GetSummaryDto;
 import com.adventurer.webapp.models.Summary;
-import com.adventurer.webapp.models.User;
-import com.adventurer.webapp.repos.SummaryRepository;
+import com.adventurer.webapp.repositories.SummaryRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SummaryService {
     private final SummaryRepository summaryRepository;
+    private final ModelMapper mapper;
 
-    public SummaryService(SummaryRepository summaryRepository) {
+    public SummaryService(SummaryRepository summaryRepository, ModelMapper mapper) {
         this.summaryRepository = summaryRepository;
+        this.mapper = mapper;
     }
 
-    public Summary getSummaryByUserEmail(String userEmail) {
-        return summaryRepository.findSummaryByUserEmail(userEmail).get();
+    public GetSummaryDto getSummaryByUserEmail(String userEmail) {
+        return mapper.map(summaryRepository.findSummaryByUserEmail(userEmail).get(), GetSummaryDto.class);
     }
 
-    public Summary save(Summary summary) {
-        return summaryRepository.save(summary);
+    public Long save(CreateSummaryRequestDto summary) {
+        return summaryRepository.save(mapper.map(summary, Summary.class)).getId();
     }
 }

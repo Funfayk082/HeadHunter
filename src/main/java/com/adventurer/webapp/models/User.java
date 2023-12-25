@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "person")
@@ -29,6 +28,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
-    private String gender;
-
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 }
