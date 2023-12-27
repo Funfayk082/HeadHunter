@@ -26,6 +26,14 @@ public class UserService {
         );
     }
 
+    public GetUserDto getUserById(Long userId) {
+        return mapper.map(
+                userRepository.findUserById(userId)
+                        .orElseThrow( () -> new UserNotFoundException(userId.toString())),
+                GetUserDto.class
+        );
+    }
+
     public Long save(CreateUserRequestDto userRequestDto) {
         User user = mapper.map(userRequestDto, User.class);
         return userRepository.save(user).getId();

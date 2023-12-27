@@ -1,8 +1,11 @@
 package com.adventurer.webapp.dto.users;
 
 import com.adventurer.webapp.models.Gender;
+import lombok.Data;
 
 import java.time.LocalDate;
+
+@Data
 
 public class CreateUserRequestDto {
     private String surname;

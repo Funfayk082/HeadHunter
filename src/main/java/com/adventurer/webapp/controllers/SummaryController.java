@@ -4,7 +4,6 @@ import com.adventurer.webapp.dto.summaries.CreateSummaryRequestDto;
 import com.adventurer.webapp.models.Summary;
 import com.adventurer.webapp.services.SummaryService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
