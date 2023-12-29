@@ -3,12 +3,16 @@ package com.adventurer.webapp.config;
 import com.adventurer.webapp.config.security.JwtAuthFilter;
 import com.adventurer.webapp.config.security.JwtAuthenticationEntryPoint;
 import com.adventurer.webapp.config.security.JwtAuthenticationProvider;
+import com.adventurer.webapp.exceptions.UserNotFoundException;
+import com.adventurer.webapp.repositories.AuthUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +21,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -33,6 +38,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
+    private final AuthUserRepository userRepository;
 
 
     @Bean
@@ -41,11 +47,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/api/vacancies/**").authenticated()
-                                .requestMatchers("/api/users/**").authenticated()
-                                .anyRequest().permitAll()
-                                )
+                        auth -> auth.requestMatchers("/api/vacancies/**").permitAll()
+                                .requestMatchers("/api/register").permitAll()
+                                .requestMatchers("/api/login").permitAll()
+                                .requestMatchers("/api/users/**").hasRole("ROLE_ADMIN")
+                                .anyRequest().authenticated()
+                )
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(jwtAuthenticationEntryPoint()))
+                .authenticationProvider(jwtAuthenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
@@ -56,10 +65,27 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager() {
-        ProviderManager providerManager = new ProviderManager(jwtAuthenticationProvider);
-        providerManager.setEraseCredentialsAfterAuthentication(false);
-        return providerManager;
+    public UserDetailsService userDetailsService() {
+        return login -> userRepository.findAuthUserByLogin(login)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 
 }

@@ -11,7 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RefreshTokenDto {
-    private String accessToken;
+    private String refreshToken;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private Date expirationDate;
 }

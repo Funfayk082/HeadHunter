@@ -8,20 +8,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtAuthenticationProvider implements AuthenticationProvider {
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        if (!authentication.isAuthenticated()) {
-            return new UsernamePasswordAuthenticationToken(
-                    authentication.getPrincipal(),
-                    authentication.getCredentials(),
-                    authentication.getAuthorities()
-            );
-        }
-        return authentication;
+        return null;
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return authentication.equals(UsernamePasswordAuthenticationToken.class);
+        return false;
     }
 }

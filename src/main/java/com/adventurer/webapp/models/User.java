@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
     @Column(nullable = false)
     private String surname;
     @Column(nullable = false)
@@ -25,8 +25,6 @@ public class User {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @Column(nullable = false)
     private LocalDate dateOfBirth;
-    @Column(nullable = false, unique = true)
-    private String email;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;

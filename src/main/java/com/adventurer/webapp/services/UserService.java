@@ -5,6 +5,7 @@ import com.adventurer.webapp.dto.users.GetUserDto;
 import com.adventurer.webapp.exceptions.UserNotFoundException;
 import com.adventurer.webapp.models.User;
 import com.adventurer.webapp.repositories.UserRepository;
+import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,6 @@ public class UserService {
 
     public Long save(CreateUserRequestDto userRequestDto) {
         User user = mapper.map(userRequestDto, User.class);
-        return userRepository.save(user).getId();
+        return userRepository.save(user).getUserId();
     }
 }
