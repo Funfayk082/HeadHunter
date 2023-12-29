@@ -17,7 +17,7 @@ import java.util.List;
 public class Hirer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long hirerId;
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)

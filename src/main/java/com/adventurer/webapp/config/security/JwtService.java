@@ -3,13 +3,15 @@ package com.adventurer.webapp.config.security;
 import com.adventurer.webapp.dto.AccessTokenDto;
 import com.adventurer.webapp.dto.RefreshTokenDto;
 import io.jsonwebtoken.Claims;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.function.Function;
 
 public interface JwtService {
-    AccessTokenDto generateAccessToken(Long userId, String role);
+    String extractLogin(String jwtToken);
+    AccessTokenDto generateAccessToken(String login, String role);
 
-    RefreshTokenDto generateRefreshToken(Long userId);
+    RefreshTokenDto generateRefreshToken(String login);
 
     String extractId(String jwtToken);
 
@@ -17,5 +19,5 @@ public interface JwtService {
 
     String extractRole(String jwtToken);
 
-    boolean isValidToken(String jwtToken);
+    boolean isValidToken(String jwtToken, UserDetails userDetails);
 }

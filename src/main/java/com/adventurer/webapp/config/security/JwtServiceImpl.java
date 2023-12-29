@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,8 +25,13 @@ public class JwtServiceImpl implements JwtService{
     private String REFRESH_TOKEN_SECRET_KEY;
 
     @Override
-    public AccessTokenDto generateAccessToken(Long userId, String role) {
-        Claims claims = Jwts.claims().setSubject(String.valueOf(userId));
+    public String extractLogin(String jwtToken) {
+        return extractClaim(jwtToken, Claims::getSubject);
+    }
+
+    @Override
+    public AccessTokenDto generateAccessToken(String login, String role) {
+        Claims claims = Jwts.claims().setSubject(login);
         claims.put("role", role);
         Date now = new Date();
         Date kill = new Date(now.getTime() + ACCESS_TOKEN_LIFE_TIME * 1000);
@@ -42,8 +48,8 @@ public class JwtServiceImpl implements JwtService{
     }
 
     @Override
-    public RefreshTokenDto generateRefreshToken(Long userId) {
-        Claims claims = Jwts.claims().setSubject(String.valueOf(userId));
+    public RefreshTokenDto generateRefreshToken(String login) {
+        Claims claims = Jwts.claims().setSubject(login);
         Date now = new Date();
         Date kill = new Date(now.getTime() + REFRESH_TOKEN_LIFE_TIME * 1000);
         return new RefreshTokenDto(
@@ -84,9 +90,11 @@ public class JwtServiceImpl implements JwtService{
         return extractAllClaims(jwtToken).get("role", String.class);
     }
 
+
     @Override
-    public boolean isValidToken(String jwtToken) {
-        return !extractExpiration(jwtToken).before(new Date());
+    public boolean isValidToken(String jwtToken, UserDetails userDetails) {
+        final String login = extractLogin(jwtToken);
+        return (login.equals(userDetails.getUsername()));
     }
 
     private Date extractExpiration(String jwtToken) {
