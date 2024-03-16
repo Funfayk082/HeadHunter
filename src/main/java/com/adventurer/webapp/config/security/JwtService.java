@@ -13,11 +13,9 @@ public interface JwtService {
 
     RefreshTokenDto generateRefreshToken(String login);
 
-    String extractId(String jwtToken);
-
     <T> T extractClaim(String jwtToken, Function<Claims, T> claimsResolver);
 
     String extractRole(String jwtToken);
 
-    boolean isValidToken(String jwtToken, UserDetails userDetails);
+    boolean isValidToken(String jwtToken);
 }

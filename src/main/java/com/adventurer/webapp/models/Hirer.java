@@ -2,10 +2,7 @@ package com.adventurer.webapp.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
@@ -31,4 +28,6 @@ public class Hirer {
     @JsonBackReference
     @ToString.Exclude
     private List<Vacancy> vacancies;
+    @OneToOne(cascade = CascadeType.ALL)
+    private AuthUser auth;
 }

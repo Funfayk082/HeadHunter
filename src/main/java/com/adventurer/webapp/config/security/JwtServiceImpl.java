@@ -55,7 +55,6 @@ public class JwtServiceImpl implements JwtService{
         return new RefreshTokenDto(
                 Jwts.builder()
                         .setClaims(claims)
-                        .setHeaderParam("millis", now.getTime())
                         .setIssuedAt(now)
                         .setExpiration(kill)
                         .signWith(Keys.hmacShaKeyFor(
@@ -63,11 +62,6 @@ public class JwtServiceImpl implements JwtService{
                         .compact(),
                 kill
         );
-    }
-
-    @Override
-    public String extractId(String jwtToken) {
-        return extractClaim(jwtToken, Claims::getSubject);
     }
 
     @Override
@@ -81,7 +75,7 @@ public class JwtServiceImpl implements JwtService{
                 .setSigningKey(Keys.hmacShaKeyFor(
                         Decoders.BASE64.decode(ACCESS_TOKEN_SECRET_KEY)))
                 .build()
-                .parseClaimsJwt(jwtToken)
+                .parseClaimsJws(jwtToken)
                 .getBody();
     }
 
@@ -92,9 +86,12 @@ public class JwtServiceImpl implements JwtService{
 
 
     @Override
-    public boolean isValidToken(String jwtToken, UserDetails userDetails) {
-        final String login = extractLogin(jwtToken);
-        return (login.equals(userDetails.getUsername()));
+    public boolean isValidToken(String jwtToken) {
+        return !isTokenExpired(jwtToken);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
     }
 
     private Date extractExpiration(String jwtToken) {

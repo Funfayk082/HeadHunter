@@ -17,8 +17,8 @@ public class SummaryService {
         this.mapper = mapper;
     }
 
-    public GetSummaryDto getSummaryByUserEmail(String userEmail) {
-        return mapper.map(summaryRepository.findSummaryByUserEmail(userEmail).get(), GetSummaryDto.class);
+    public GetSummaryDto getSummaryByUserEmail(Long id) {
+        return mapper.map(summaryRepository.findSummaryByUserUserId(id).get(), GetSummaryDto.class);
     }
 
     public Long save(CreateSummaryRequestDto summary) {

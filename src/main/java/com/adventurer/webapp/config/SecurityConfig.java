@@ -50,8 +50,9 @@ public class SecurityConfig {
                         auth -> auth.requestMatchers("/api/vacancies/**").permitAll()
                                 .requestMatchers("/api/register").permitAll()
                                 .requestMatchers("/api/login").permitAll()
-                                .requestMatchers("/api/users/**").hasRole("ROLE_ADMIN")
+                                .requestMatchers("/api/avatar").permitAll()
                                 .anyRequest().authenticated()
+
                 )
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(jwtAuthenticationEntryPoint()))
                 .authenticationProvider(jwtAuthenticationProvider)
