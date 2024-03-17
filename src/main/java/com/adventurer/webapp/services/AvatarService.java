@@ -9,7 +9,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -40,8 +39,7 @@ public class AvatarService implements StorageService{
     }
 
     @Override
-    public String store(MultipartFile file) {
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+    public String store(MultipartFile file, String filename) {
         try {
             if(file.isEmpty()) throw new StorageException("Не удалось сохранить пустой файл " + filename);
             if (filename.contains("..")) throw new StorageException("Невозможно сохранить файл с относительным путем вне текущего каталога " + filename);

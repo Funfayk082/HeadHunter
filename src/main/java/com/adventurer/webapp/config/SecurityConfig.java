@@ -51,6 +51,8 @@ public class SecurityConfig {
                                 .requestMatchers("/api/avatar/upload").permitAll()
                                 .requestMatchers("/api/avatar/download").permitAll()
                                 .requestMatchers("/api/register").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
                                 .requestMatchers("/api/login").permitAll()
                                 .anyRequest().authenticated()
 

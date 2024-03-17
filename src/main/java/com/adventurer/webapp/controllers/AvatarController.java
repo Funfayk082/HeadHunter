@@ -2,6 +2,9 @@ package com.adventurer.webapp.controllers;
 
 import com.adventurer.webapp.dto.AvatarResponse;
 import com.adventurer.webapp.services.StorageService;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -20,6 +23,22 @@ public class AvatarController {
     }
 
     @GetMapping("/download")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Получение фотографии по названию (в процессе)",
+                    content = {
+                            @Content(mediaType = "image/png")
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "НЕТ ТУТ НИКОГО ТЫ ПОНИМАЕШЬ????",
+                    content = {
+                            @Content(mediaType = "image/png")
+                    }
+            )
+    })
     public ResponseEntity<Resource> download(@RequestParam String filename) {
         Resource resource = storageService.loadAsResource(filename);
 
@@ -31,8 +50,24 @@ public class AvatarController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
-        String name = storageService.store(file);
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Загрузить фото",
+                    content = {
+                            @Content(mediaType = "image/png")
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "НЕТ ТУТ НИКОГО ТЫ ПОНИМАЕШЬ????",
+                    content = {
+                            @Content(mediaType = "image/png")
+                    }
+            )
+    })
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String filename) {
+        String name = storageService.store(file, filename);
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/download/")
@@ -40,7 +75,7 @@ public class AvatarController {
                 .toUriString();
 
         return new ResponseEntity<>(
-                new AvatarResponse(name, uri, file.getContentType(), file.getSize()),
+                new AvatarResponse(filename, uri, file.getContentType(), file.getSize()),
                 HttpStatusCode.valueOf(200)
         );
     }
