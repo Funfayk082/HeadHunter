@@ -1,13 +1,16 @@
 package com.adventurer.webapp;
 
+import com.adventurer.webapp.config.StorageConfig;
 import jakarta.servlet.MultipartConfigElement;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.util.unit.DataSize;
 
 @SpringBootApplication
+@EnableConfigurationProperties(StorageConfig.class)
 public class WebappApplication {
     @Bean
     MultipartConfigElement multipartConfigElement() {

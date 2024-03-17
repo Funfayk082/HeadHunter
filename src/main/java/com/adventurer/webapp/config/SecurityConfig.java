@@ -48,9 +48,10 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers("/api/vacancies/**").permitAll()
+                                .requestMatchers("/api/avatar/upload").permitAll()
+                                .requestMatchers("/api/avatar/download").permitAll()
                                 .requestMatchers("/api/register").permitAll()
                                 .requestMatchers("/api/login").permitAll()
-                                .requestMatchers("/api/avatar").permitAll()
                                 .anyRequest().authenticated()
 
                 )
