@@ -4,10 +4,12 @@ import com.adventurer.webapp.enums.Education;
 import com.adventurer.webapp.enums.EmploymentType;
 import com.adventurer.webapp.enums.WorkExperience;
 import com.adventurer.webapp.enums.WorkShedule;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class Vacancy {
     @Enumerated(EnumType.STRING)
     private Education education;
     @Column(nullable = false)
-    private List<String> otherParams;
+    private String otherParams;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private EmploymentType employmentType;
@@ -47,4 +49,8 @@ public class Vacancy {
     @ManyToOne
     @JoinColumn(nullable = false, name = "hirer_id")
     private Hirer hirer;
+    @OneToMany(mappedBy = "vacancy", cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ToString.Exclude
+    private List<VacancyTag> tag;
 }

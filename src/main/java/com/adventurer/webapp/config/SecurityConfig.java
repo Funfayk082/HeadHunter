@@ -5,9 +5,11 @@ import com.adventurer.webapp.config.security.JwtAuthenticationEntryPoint;
 import com.adventurer.webapp.config.security.JwtAuthenticationProvider;
 import com.adventurer.webapp.exceptions.UserNotFoundException;
 import com.adventurer.webapp.repositories.AuthUserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -28,6 +30,11 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Collections;
+import java.util.List;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -45,11 +52,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(
                         auth -> auth.requestMatchers("/api/vacancies/**").permitAll()
-                                .requestMatchers("/api/avatar/upload").permitAll()
-                                .requestMatchers("/api/avatar/download").permitAll()
+                                .requestMatchers("/api/avatar/upload**").permitAll()
+                                .requestMatchers("/api/avatar/download**").permitAll()
+                                .requestMatchers("/api/tag**").permitAll()
                                 .requestMatchers("/api/register").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
@@ -90,6 +98,18 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        return request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedOrigins(Collections.singletonList(request.getHeader("Origin")));
+            config.setAllowedMethods(List.of("POST", "GET", "OPTIONS", "PUT", "DELETE", "PATCH", "HEAD"));
+            config.setAllowedHeaders(List.of("Content-Type", "Authorization"));
+            config.setAllowCredentials(true);
+            return config;
+        };
     }
 
 }

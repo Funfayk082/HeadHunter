@@ -2,12 +2,16 @@ package com.adventurer.webapp.controllers;
 
 import com.adventurer.webapp.dto.AvatarResponse;
 import com.adventurer.webapp.services.StorageService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.extensions.Extension;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +32,7 @@ public class AvatarController {
                     responseCode = "200",
                     description = "Получение фотографии по названию (в процессе)",
                     content = {
-                            @Content(mediaType = "image/png")
+                            @Content(mediaType = "multipart/form-data")
                     }
             ),
             @ApiResponse(
@@ -43,30 +47,34 @@ public class AvatarController {
         Resource resource = storageService.loadAsResource(filename);
 
         return ResponseEntity.ok()
-                .header(
-                        HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + resource.getFilename() + "\"")
+                .contentType(MediaType.IMAGE_JPEG)
                 .body(resource);
     }
 
     @PostMapping("/upload")
+    @Parameters({
+            @Parameter(content = {
+                    @Content(mediaType = "multipart/form-data")
+            })
+    }
+    )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
                     description = "Загрузить фото",
                     content = {
-                            @Content(mediaType = "image/png")
+                            @Content(mediaType = "multipart/form-data")
                     }
             ),
             @ApiResponse(
                     responseCode = "404",
                     description = "НЕТ ТУТ НИКОГО ТЫ ПОНИМАЕШЬ????",
                     content = {
-                            @Content(mediaType = "image/png")
+                            @Content(mediaType = "multipart/form-data")
                     }
             )
     })
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String filename) {
+    public ResponseEntity<?> uploadFile(@RequestPart("file") MultipartFile file, @RequestParam String filename) {
         String name = storageService.store(file, filename);
 
         String uri = ServletUriComponentsBuilder.fromCurrentContextPath()

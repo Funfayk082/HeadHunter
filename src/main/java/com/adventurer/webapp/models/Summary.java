@@ -22,6 +22,15 @@ public class Summary {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
