@@ -6,6 +6,7 @@ import com.adventurer.webapp.dto.RefreshTokenDto;
 import com.adventurer.webapp.dto.Token;
 import com.adventurer.webapp.dto.auth.AuthUserDto;
 import com.adventurer.webapp.dto.users.CreateUserRequestDto;
+import com.adventurer.webapp.exceptions.UserNotFoundException;
 import com.adventurer.webapp.models.AuthUser;
 import com.adventurer.webapp.models.User;
 import com.adventurer.webapp.repositories.AuthUserRepository;
@@ -56,7 +57,9 @@ public class AuthenticationService {
                 )
         );
         var user = repository.findAuthUserByLogin(request.getLogin())
-                .orElseThrow();
+                .orElseThrow(
+                        () -> new UserNotFoundException(request.getLogin())
+                );
         var accessToken = jwtService.generateAccessToken(user.getLogin(), String.valueOf(user.getRole()));
         var refreshToken = jwtService.generateRefreshToken(user.getLogin());
         return new Token(accessToken, refreshToken);
