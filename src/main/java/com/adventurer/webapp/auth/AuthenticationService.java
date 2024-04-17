@@ -65,9 +65,9 @@ public class AuthenticationService {
         return new Token(accessToken, refreshToken);
     }
 
-    public Token refresh(RefreshTokenDto refreshToken) {
-        var login = jwtService.extractLogin(refreshToken.getRefreshToken());
-        var role = jwtService.extractRole(refreshToken.getRefreshToken());
+    public Token refresh(String refreshToken) {
+        var login = jwtService.extractLogin(refreshToken);
+        var role = jwtService.extractRole(refreshToken);
         var accessToken = jwtService.generateAccessToken(login, role);
         var newRefreshToken = jwtService.generateRefreshToken(login);
         return new Token(accessToken, newRefreshToken);
